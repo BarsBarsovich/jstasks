@@ -62,6 +62,12 @@ function returnFnResult(fn) {
    console.log(f()); // выведет 13
  */
 function returnCounter(number) {
+
+    let localNumber = number || 0;
+
+    return function () {
+        return ++localNumber;
+    }
 }
 
 /*
@@ -95,7 +101,7 @@ function returnArgumentsArray() {
    console.log(newSum()) выведет 6
  */
 function bindFunction(fn) {
-
+    // let localFunction = fn();
 }
 
 export {
