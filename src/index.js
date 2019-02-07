@@ -43,13 +43,7 @@ function map(array, fn) {
  */
 function reduce(array, fn, initial) {
 
-    let result = [];
 
-    for (let i = 0; i < array.length; i++) {
-        result.push(fn(array, initial));
-    }
-
-    return result;
 }
 
 /*
@@ -86,16 +80,16 @@ function slice(array, from, to) {
         } else if (to < 0) {
             if (Math.abs(to) > arrayLength) {
                 return [];
-            } else {
-                from = 0;
-                to = arrayLength - Math.abs(to);
             }
+
+            from = 0;
+            to = arrayLength - Math.abs(to);
+
         } else if (to > 0) {
             if (to > arrayLength) {
                 return array;
-            } else {
-                from = 0;
             }
+            from = 0;
         }
     } else if (from === 0) {
         if (to === undefined) {
@@ -125,9 +119,8 @@ function slice(array, from, to) {
         } else if (to < 0) {
             if (Math.abs(to) > arrayLength) {
                 return [];
-            } else {
-                to = arrayLength - Math.abs(to);
             }
+            to = arrayLength - Math.abs(to);
         } else if (to === undefined) {
             to = arrayLength;
         }
@@ -159,6 +152,18 @@ function slice(array, from, to) {
  Proxy должен перехватывать все попытки записи значений свойств и возводить это значение в квадрат
  */
 function createProxy(obj) {
+    let proxy = new Proxy(obj, {
+        get(target, prop) {
+            return target[prop];
+        },
+        set(target, prop, value) {
+            target[prop] = value * value;
+
+            return true;
+        }
+    })
+
+    return proxy;
 }
 
 export {
