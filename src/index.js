@@ -43,7 +43,13 @@ function map(array, fn) {
  */
 function reduce(array, fn, initial) {
 
+    let sum = initial || 0;
 
+    for (let i = 0; i < array.length; i++){
+        sum += array[i];
+    }
+
+    return sum ;
 }
 
 /*
@@ -55,9 +61,7 @@ function reduce(array, fn, initial) {
    upperProps({ name: 'Сергей', lastName: 'Петров' }) вернет ['NAME', 'LASTNAME']
  */
 function upperProps(obj) {
-    return Object.keys(obj).map(item => {
-        return item.toUpperCase();
-    });
+    return Object.keys(obj).map(i => i.toUpperCase());
 }
 
 /*
