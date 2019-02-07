@@ -152,10 +152,17 @@ describe('ДЗ 3 - объекты и массивы', () => {
             let result = reduce(array, (prev, el) => prev + el);
             let initial = random('number');
 
+            console.log('firstTargetInTest', target);
+            console.log('firstResultInTest', result);
+
             assert.deepEqual(result, target);
 
             target = nativeReduce.call(array, (prev, el) => prev + el, initial);
             result = reduce(array, (prev, el) => prev + el, initial);
+            console.log('secondTargetInTest', target);
+            console.log('secondResultInTest', result);
+
+
             assert.deepEqual(result, target);
         });
     });

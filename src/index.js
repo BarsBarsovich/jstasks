@@ -43,13 +43,23 @@ function map(array, fn) {
  */
 function reduce(array, fn, initial) {
 
-    let sum = initial || 0;
+    console.log('initial', initial);
+    console.log('array', array);
 
-    for (let i = 0; i < array.length; i++){
-        sum += array[i];
+    let currentVal = 0;
+
+    for (let i = 0; i < array.length; i++) {
+        if (i === 0) {
+            currentVal = fn(initial || array[0], array[i], i, array);
+            continue;
+        }
+
+        currentVal = fn(currentVal, array[i], i, array);
     }
 
-    return sum ;
+    console.log('beforeReturn', currentVal);
+
+    return currentVal;
 }
 
 /*
