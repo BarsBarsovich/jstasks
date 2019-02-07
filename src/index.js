@@ -101,7 +101,16 @@ function returnArgumentsArray() {
    console.log(newSum()) выведет 6
  */
 function bindFunction(fn) {
-    // let localFunction = fn();
+
+    const parameters = Array.from(arguments).filter(item => {
+        if (typeof item !== 'function') {
+            return item;
+        }
+    });
+
+    let t = fn.bind(fn, parameters.join(''));
+
+    return t;
 }
 
 export {
