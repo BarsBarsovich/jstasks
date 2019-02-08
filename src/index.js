@@ -43,21 +43,19 @@ function map(array, fn) {
  */
 function reduce(array, fn, initial) {
 
-    console.log('initial', initial);
-    console.log('array', array);
-
     let currentVal = 0;
 
     for (let i = 0; i < array.length; i++) {
         if (i === 0) {
+            if (initial === undefined) {
+                i++;
+            }
             currentVal = fn(initial || array[0], array[i], i, array);
             continue;
         }
 
         currentVal = fn(currentVal, array[i], i, array);
     }
-
-    console.log('beforeReturn', currentVal);
 
     return currentVal;
 }
@@ -166,7 +164,7 @@ function slice(array, from, to) {
  Proxy должен перехватывать все попытки записи значений свойств и возводить это значение в квадрат
  */
 function createProxy(obj) {
-    let proxy = new Proxy(obj, {
+    return new Proxy(obj, {
         get(target, prop) {
             return target[prop];
         },
@@ -175,9 +173,7 @@ function createProxy(obj) {
 
             return true;
         }
-    })
-
-    return proxy;
+    });
 }
 
 export {
