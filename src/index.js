@@ -62,7 +62,6 @@ function returnFnResult(fn) {
    console.log(f()); // выведет 13
  */
 function returnCounter(number) {
-
     let localNumber = number || 0;
 
     return function () {
@@ -100,15 +99,14 @@ function returnArgumentsArray() {
 
    console.log(newSum()) выведет 6
  */
-function bindFunction(fn) {
+function bindFunction(fn, ...params) {
+    // const parameters = Array.from(arguments).filter(item => {
+    //     if (typeof item !== 'function') {
+    //         return item;
+    //     }
+    // });
 
-    const parameters = Array.from(arguments).filter(item => {
-        if (typeof item !== 'function') {
-            return item;
-        }
-    });
-
-    let t = fn.bind(fn, parameters.join(''));
+    let t = fn.bind(null, ...params);
 
     return t;
 }
