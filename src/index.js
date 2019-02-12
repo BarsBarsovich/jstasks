@@ -17,7 +17,21 @@
    isAllTrue([100, 2, 3, 4, 5], n => n < 10) // вернет false
  */
 function isAllTrue(array, fn) {
+    if (array === undefined || array.length === 0 || !Array.isArray(array)) {
+        throw new Error('empty array');
+    }
 
+    if (fn === undefined || typeof fn !== 'function') {
+        throw new Error('fn is not a function')
+    }
+
+    for (let item of array) {
+        if (!fn(item)) {
+            return false
+        }
+    }
+
+    return true;
 }
 
 /*
@@ -37,6 +51,21 @@ function isAllTrue(array, fn) {
    isSomeTrue([1, 2, 3, 4, 5], n => n > 20) // вернет false
  */
 function isSomeTrue(array, fn) {
+    if (array === undefined || !Array.isArray(array) || array.length === 0) {
+        throw new Error('empty array');
+    }
+
+    if (fn === undefined || typeof fn !== 'function') {
+        throw new Error('fn is not a function')
+    }
+
+    for (let item of array) {
+        if (fn(item)) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 /*
@@ -51,6 +80,7 @@ function isSomeTrue(array, fn) {
    - fn не является функцией (с текстом "fn is not a function")
  */
 function returnBadArguments(fn) {
+    let t = 0
 }
 
 /*
