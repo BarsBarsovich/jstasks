@@ -165,9 +165,6 @@ function slice(array, from, to) {
  */
 function createProxy(obj) {
     return new Proxy(obj, {
-        get(target, prop) {
-            return target[prop];
-        },
         set(target, prop, value) {
             target[prop] = value * value;
 
