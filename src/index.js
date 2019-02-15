@@ -82,7 +82,7 @@ function isSomeTrue(array, fn) {
 function returnBadArguments(fn) {
     let [_fn, ...otherParams] = arguments;
 
-    if (fn === undefined || typeof fn !== 'function') {
+    if (typeof fn !== 'function') {
         throw new Error('fn is not a function');
     }
 
