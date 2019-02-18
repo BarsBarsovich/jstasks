@@ -77,10 +77,12 @@ function findAllPSiblings(where) {
    findError(document.body) // функция должна вернуть массив с элементами 'привет' и 'loftschool'
  */
 function findError(where) {
-    var result = [];
+    let result = []; // не принципиально, можно и var, Но на let линтер не ругается
 
-    for (var child of where.childNodes) {
-        result.push(child.innerText);
+    for (let child of where.childNodes) { // не принципиально, можно и var, Но на let линтер не ругается
+        if (child.tagName !== undefined && child.tagName.toUpperCase() === 'DIV') {
+            result.push(child.innerHTML);
+        }
     }
 
     return result;
@@ -99,6 +101,7 @@ function findError(where) {
    должно быть преобразовано в <div></div><p></p>
  */
 function deleteTextNodes(where) {
+    return where.map(item => item.tagName !== undefined)
 }
 
 /*
@@ -106,7 +109,6 @@ function deleteTextNodes(where) {
 
  Выполнить предудыщее задание с использование рекурсии - то есть необходимо заходить внутрь каждого дочернего элемента (углубляться в дерево)
 
- Задачу необходимо решить без использования рекурсии, то есть можно не уходить вглубь дерева.
  Так же будьте внимательны при удалении узлов, т.к. можно получить неожиданное поведение при переборе узлов
 
  Пример:
@@ -114,6 +116,19 @@ function deleteTextNodes(where) {
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
 function deleteTextNodesRecursive(where) {
+    let result = [];
+
+    console.log('Where' + where.innerHTML);
+
+    for (let i = 0; i < where.childNodes.length; i++) {
+        if (where.childNodes[i].length) {
+            result.push(where.childNodes[i].tagName);
+            // console.log('elementsArray', result);
+        } else {
+            console.log('run recursive');
+            deleteTextNodesRecursive(where.childNodes[i]);
+        }
+    }
 }
 
 /*
@@ -137,6 +152,22 @@ function deleteTextNodesRecursive(where) {
    }
  */
 function collectDOMStat(root) {
+    const result = {
+        tags: {},
+        classes: {},
+        texts: 0
+    };
+
+
+    let elementsArray = [];
+
+    for (let item of root.childNodes) {
+        if (item.childNodes === 0) {
+
+        }
+    }
+
+    return result;
 }
 
 /*
