@@ -12,7 +12,9 @@
  */
 function createDivWithText(text) {
     const newElement = document.createElement('div');
+
     newElement.innerHTML = text;
+
     return newElement;
 }
 
@@ -25,7 +27,7 @@ function createDivWithText(text) {
    prepend(document.querySelector('#one'), document.querySelector('#two')) // добавит элемент переданный первым аргументом в начало элемента переданного вторым аргументом
  */
 function prepend(what, where) {
-
+    where.insertBefore(what, where.childNodes[0]);
 }
 
 /*
@@ -101,7 +103,7 @@ function findError(where) {
    должно быть преобразовано в <div></div><p></p>
  */
 function deleteTextNodes(where) {
-    return where.map(item => item.tagName !== undefined)
+
 }
 
 /*
@@ -116,19 +118,7 @@ function deleteTextNodes(where) {
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
 function deleteTextNodesRecursive(where) {
-    let result = [];
 
-    console.log('Where' + where.innerHTML);
-
-    for (let i = 0; i < where.childNodes.length; i++) {
-        if (where.childNodes[i].length) {
-            result.push(where.childNodes[i].tagName);
-            // console.log('elementsArray', result);
-        } else {
-            console.log('run recursive');
-            deleteTextNodesRecursive(where.childNodes[i]);
-        }
-    }
 }
 
 /*
@@ -152,22 +142,7 @@ function deleteTextNodesRecursive(where) {
    }
  */
 function collectDOMStat(root) {
-    const result = {
-        tags: {},
-        classes: {},
-        texts: 0
-    };
 
-
-    let elementsArray = [];
-
-    for (let item of root.childNodes) {
-        if (item.childNodes === 0) {
-
-        }
-    }
-
-    return result;
 }
 
 /*
