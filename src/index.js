@@ -103,7 +103,17 @@ function findError(where) {
    должно быть преобразовано в <div></div><p></p>
  */
 function deleteTextNodes(where) {
+    let result = [];
+    let indexer = 0;
 
+    for (let item of where.childNodes) {
+        if (item.tagName === undefined) {
+            where.childNodes[indexer].remove();
+        }
+        indexer++;
+    }
+
+    return result;
 }
 
 /*
