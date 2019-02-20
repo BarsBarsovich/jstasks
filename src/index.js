@@ -129,6 +129,16 @@ function deleteTextNodes(where) {
  */
 function deleteTextNodesRecursive(where) {
 
+    if (where.firstElementChild != null) {
+        let child = where.firstElementChild;
+
+        deleteTextNodesRecursive(child);
+    }
+    if (where.nextSibling != null) {
+        let sibling = where.nextSibling;
+
+        deleteTextNodesRecursive(sibling);
+    }
 }
 
 /*
