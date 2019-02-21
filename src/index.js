@@ -128,17 +128,15 @@ function deleteTextNodes(where) {
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
 function deleteTextNodesRecursive(where) {
-
-    if (where.firstElementChild != null) {
-        let child = where.firstElementChild;
-
-        deleteTextNodesRecursive(child);
+    for (let item of where.childNodes) {
+        if (item.nodeType === 3) {
+            let parent = item.parentElement;
+            item.remove();
+            deleteTextNodesRecursive(parent);
+        }
+        deleteTextNodesRecursive(item);
     }
-    if (where.nextSibling != null) {
-        let sibling = where.nextSibling;
 
-        deleteTextNodesRecursive(sibling);
-    }
 }
 
 /*
@@ -198,6 +196,39 @@ function collectDOMStat(root) {
    }
  */
 function observeChildNodes(where, fn) {
+
+    let MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+
+    let observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+            if (mutation.type === 'childList') {
+                if (mutation.addedNodes.length > 0) {
+
+                    const argsObj = {
+                        type: 'insert',
+                        nodes: Array.from(mutation.addedNodes)
+                    };
+
+                    fn(argsObj);
+                }
+
+                if (mutation.removedNodes.length > 0) {
+                    const argsObj = {
+                        type: 'remove',
+                        nodes: Array.from(mutation.removedNodes)
+                    };
+
+                    fn(argsObj);
+                }
+            }
+        })
+    });
+
+    observer.observe(where, {
+        attributes: true,
+        childList: true,
+        characterData: true
+    });
 }
 
 export {
