@@ -131,6 +131,7 @@ function deleteTextNodesRecursive(where) {
     for (let item of where.childNodes) {
         if (item.nodeType === 3) {
             let parent = item.parentElement;
+
             item.remove();
             deleteTextNodesRecursive(parent);
         }
@@ -165,7 +166,6 @@ function collectDOMStat(root) {
     let count = 0;
 
     localRecursive(root);
-
 
     function localRecursive(root) {
         for (let item of root.childNodes) {
