@@ -13,7 +13,7 @@
 function createDivWithText(text) {
     const newElement = document.createElement('div');
 
-    newElement.innerHTML = text;
+    newElement.textContent = text;
 
     return newElement;
 }
@@ -53,7 +53,7 @@ function findAllPSiblings(where) {
     let result = [];
 
     for (let i = 0; i < where.childNodes.length; i++) {
-        if (where.childNodes[i].tagName.toUpperCase() === 'P' && i > 0) {
+        if (where.childNodes[i].tagName === 'P') {
             result.push(where.childNodes[i - 1])
         }
     }
@@ -81,10 +81,8 @@ function findAllPSiblings(where) {
 function findError(where) {
     let result = []; // не принципиально, можно и var, Но на let линтер не ругается
 
-    for (let child of where.childNodes) { // не принципиально, можно и var, Но на let линтер не ругается
-        if (child.tagName !== undefined && child.tagName.toUpperCase() === 'DIV') {
-            result.push(child.innerHTML);
-        }
+    for (let child of where.children) { // не принципиально, можно и var, Но на let линтер не ругается
+        result.push(child.innerHTML);
     }
 
     return result;
@@ -107,7 +105,7 @@ function deleteTextNodes(where) {
     let indexer = 0;
 
     for (let item of where.childNodes) {
-        if (item.tagName === undefined) {
+        if (item.nodeType === 3) {
             where.childNodes[indexer].remove();
         }
         indexer++;
@@ -128,16 +126,16 @@ function deleteTextNodes(where) {
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
 function deleteTextNodesRecursive(where) {
-    for (let item of where.childNodes) {
-        if (item.nodeType === 3) {
-            let parent = item.parentElement;
+    for (let i = 0; i < where.childNodes.length; i++) {
+        const node = where.childNodes[i];
 
-            item.remove();
-            deleteTextNodesRecursive(parent);
+        if (node.nodeType === 3) {
+            node.remove();
+            i--;
+        } else if (node.childNodes.length) {
+            deleteTextNodesRecursive(node);
         }
-        deleteTextNodesRecursive(item);
     }
-
 }
 
 /*
