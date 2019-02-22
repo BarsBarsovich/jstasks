@@ -18,6 +18,8 @@ function createDivWithText(text) {
     return newElement;
 }
 
+
+
 /*
  Задание 2:
 
