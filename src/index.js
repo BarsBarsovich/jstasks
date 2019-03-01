@@ -10,7 +10,7 @@
  */
 function delayPromise(seconds) {
     return new Promise(function (resolve) {
-        setTimeout(()=> {
+        setTimeout(() => {
             resolve()
         }, seconds * 1000)
 
@@ -31,16 +31,22 @@ function delayPromise(seconds) {
    loadAndSortTowns().then(towns => console.log(towns)) // должна вывести в консоль отсортированный массив городов
  */
 function loadAndSortTowns() {
+    const jsonUrl = 'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json';
+    let fetchData = [];
 
-    const cities = new Promise(function (resolve, reject) {
+    return new Promise(function (resolve) {
+        return fetch(jsonUrl).then(response => {
+            response.json().then(data => {
+                fetchData = Array.from(data).sort((a, b) => {
+                    return a.name.localeCompare(b.name);
+                });
 
-    });
+                resolve(fetchData);
+            });
+        });
 
-    cities.then(function (cityList) {
-        const [name] = [...cityList];
+    })
 
-        Array.sort(name);
-    }).catch()
 }
 
 export {
