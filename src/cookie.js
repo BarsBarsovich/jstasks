@@ -43,32 +43,64 @@ const addButton = homeworkContainer.querySelector('#add-button');
 // таблица со списком cookie
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 
+window.onload = function () {
+    const deleteButtons = listTable.querySelectorAll('button');
 
-loadCookies();
+    for (let button of deleteButtons) {
+        button.addEventListener('click', (e) => {
 
-filterNameInput.addEventListener('keyup', function () {
+            deleteCookie(e.target.dataset.name);
+        })
+    }
+}
+
+getCookies();
+
+filterNameInput.addEventListener('keyup', function (keyValue) {
     // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
+    if (!filterNameInput.value) {
+        getCookies()
+    } else {
+        if (keyValue) {
+            getCookies(keyValue.key);
+        }
+    }
 });
 
 addButton.addEventListener('click', () => {
     // здесь можно обработать нажатие на кнопку "добавить cookie"
-    const cookieName = document.getElementById('add-name-input').value;
-
-    const cookieValue = document.getElementById('add-value-input').value;
+    const cookieName = addNameInput.value;
+    const cookieValue = addValueInput.value;
 
     if (cookieName !== '' && cookieValue !== '') {
-        document.cookie = `${cookieName}=${cookieValue}`;
-        document.getElementById('add-value-input').value =
-            document.getElementById('add-name-input').value = '';
+        for (let item of document.cookie.split('; ')) {
+            const [name] = item.split('=');
+
+            if (name === cookieName) {
+                setCookie(name, '', {
+                    expires: -1
+                });
+            }
+        }
+
+        setCookie(cookieName, cookieValue, {});
     }
+
+    getCookies(filterNameInput.value);
 });
 
-function loadCookies() {
-    const cookiesArray = document.cookie.split('; ');
-
-    for (let cookieValue of cookiesArray) {
+function getCookies(symbolsInCookie = '') {
+    listTable.innerHTML = '';
+    for (let cookieValue of document.cookie.split('; ')) {
         let [name, value] = cookieValue.split('=');
-        const trString = `<td>${name}</td><td>${value}</td><td><button id="deleteCookie" onclick="deleteCookie('${name}')">Удалить</button></td>`
+        const trString = `<td id="cookieName">${name}</td><td id="cookieValue">${value}</td><td>` +
+            `<button id="deleteCookie" data-name="${name}">Удалить</button></td>`;
+
+        if (symbolsInCookie) {
+            if (name.indexOf(filterNameInput.value) < 0 && value.indexOf(filterNameInput.value) < 0) {
+                continue;
+            }
+        }
         const tr = document.createElement('tr');
 
         tr.innerHTML = trString;
@@ -77,9 +109,40 @@ function loadCookies() {
     }
 }
 
-
 function deleteCookie(name) {
-
+    setCookie(name, '', {
+        expires: -1
+    });
+    getCookies(filterNameInput.value);
 }
 
+function setCookie(name, value, options) {
+    options = options || {};
 
+    var expires = options.expires;
+
+    if (typeof expires == 'number' && expires) {
+        let d = new Date();
+
+        d.setTime(d.getTime() + expires * 1000);
+        expires = options.expires = d;
+    }
+    if (expires && expires.toUTCString) {
+        options.expires = expires.toUTCString();
+    }
+
+    value = encodeURIComponent(value);
+
+    var updatedCookie = name + '=' + value;
+
+    for (var propName in options) {
+        updatedCookie += '; ' + propName;
+        let propValue = options[propName];
+
+        if (propValue !== true) {
+            updatedCookie += '=' + propValue;
+        }
+    }
+
+    document.cookie = updatedCookie;
+}
