@@ -43,29 +43,33 @@ const addButton = homeworkContainer.querySelector('#add-button');
 // таблица со списком cookie
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 
-window.onload = function () {
-    const deleteButtons = listTable.querySelectorAll('button');
-
-    for (let button of deleteButtons) {
-        button.addEventListener('click', (e) => {
-
-            deleteCookie(e.target.dataset.name);
-        })
-    }
-}
-
 getCookies();
 
 filterNameInput.addEventListener('keyup', function (keyValue) {
     // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
-    if (!filterNameInput.value) {
-        getCookies()
-    } else {
-        if (keyValue) {
-            getCookies(keyValue.key);
-        }
-    }
+    getCookies(filterNameInput.value);
+    // if (!filterNameInput.value) {
+    //     console.log('fromTestVAl')
+    //     getCookies(filterNameInput.value)
+    // } else {
+    //     if (keyValue) {
+    //         console.log('FromKey', keyValue.key);
+    //         getCookies(keyValue.key);
+    //     }
+    // }
 });
+
+listTable.addEventListener('click', (e) => {
+    console.log('hello from tests');
+    if (e.target.type === 'submit') {
+        const cookieName = e.target.parentElement.parentElement.querySelector('#cookieName').innerText;
+        console.log('CookieName', cookieName.trim());
+
+        // deleteCookie(e.target.dataset.name);
+        deleteCookie(cookieName);
+        getCookies();
+    }
+})
 
 addButton.addEventListener('click', () => {
     // здесь можно обработать нажатие на кнопку "добавить cookie"
@@ -101,11 +105,14 @@ function getCookies(symbolsInCookie = '') {
                 continue;
             }
         }
-        const tr = document.createElement('tr');
+        if (value !== undefined) {
+            const tr = document.createElement('tr');
 
-        tr.innerHTML = trString;
+            tr.innerHTML = trString;
 
-        listTable.appendChild(tr);
+            listTable.appendChild(tr);
+
+        }
     }
 }
 
